@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 1</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+
+        .card-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .card {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding: 20px;
+            background-color: #fff;
+            border: 2px solid #ccc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        #card2 {
+            height: 100px;
+            color: #888;
+        }
+
+        .card-button {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2rem;
+            color: #fff;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .card-button:hover {
+            background-color: #0056b3;
+        }
+
+    </style>
+</head>
+<body>
+<div class="card-container">
+    <div class="card" id="card1">012345678</div>
+    <div class="card" id="card2"></div>
+    <button class="card-button" id="baslat">Başlat</button>
+</div>
+
+<script>
+    document.getElementById('baslat').addEventListener('click', function() {
+        var card1 = document.getElementById('card1');
+         var card2 = document.getElementById('card2');
+        var content = card1.textContent;
+        var chars = content.split('').map(Number); // Karakterleri sayıya dönüştür
+        chars.push(-1);
+        var order = []; // Karakter sıralamasını tutacak dizi
+        var delays = []; // Gecikmeleri tutacak dizi
+        var currentIndex = 0; // Şu anki karakterin dizideki indeksi
+        var i =0,n=0;
+        // Tüm karakterleri kontrol et
+        console.log(chars);
+        while(currentIndex<chars.length){
+            if(chars[currentIndex+1]%2 == 1)
+            {
+                    order.push(chars[currentIndex+1]);
+                    order.push(chars[currentIndex]);
+                    delays.push((chars[currentIndex+1]*1000)+4000);
+                    delays.push(1000);       
+            }else{
+                order.push(chars[currentIndex]);
+                    delays.push(1000);
+            }
+        currentIndex=currentIndex+2;
+    }
+        // Sonuçları konsola yazdır
+        console.log(order);
+        console.log(delays);
+        currentIndex =0;
+        display(0, order, delays, card2);
+    });
+    
+    function display(currentIndex, order, delays, card2) {
+        var tmp;
+    setTimeout(function() {
+        var lastMember = card2.textContent.slice(-1);
+        if(card2.textContent.slice(-1)<order[currentIndex])
+        {
+            card2.textContent += order[currentIndex];
+        }else{
+            tmp = card2.textContent.slice(-1);
+            var yeniIcerik = card2.textContent.slice(0, -1); // Son karakteri sil
+            card2.textContent = yeniIcerik+order[currentIndex]+tmp;
+            
+        }
+        // Bir sonraki karakteri göstermek için fonksiyonu tekrar çağır
+        if (currentIndex + 1 < order.length) {
+            display(currentIndex + 1, order, delays, card2);
+        }
+    }, delays[currentIndex]);
+}
+    
+
+</script>
+
+</body>
+</html>
